@@ -1,5 +1,11 @@
+import Navbar from "./ui/shared/Navbar";
+
 const App = () => {
-  return <div>HelloWorld</div>;
+  return (
+    <>
+      <Navbar />
+    </>
+  );
 };
 
 export default App;
