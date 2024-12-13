@@ -1,14 +1,26 @@
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HiBarsArrowDown, HiBarsArrowUp } from "react-icons/hi2";
 import { IoSearch } from "react-icons/io5";
 
 const Navbar = () => {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  //close the modal when clicked outside
+  useEffect(() => {
+    const handleClick = (e: any) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [open]);
   return (
-    <div className="relative">
-      <div className="bg-black px-2 py-3 flex justify-between items-center w-full">
+    <div className="relative w-full">
+      <div className="bg-black px-2 md:px-12 py-3 flex justify-between items-center w-full">
         <div className="flex sm:gap-4 gap-2 items-center">
           <div className="flex gap-2 sm:gap-4 items-center lg:hidden">
             <img
@@ -19,12 +31,12 @@ const Navbar = () => {
             />
             <button
               onClick={() => setOpen(!open)}
-              className="text-2xl text-white p-2 bg-slate-800 rounded-md hover:bg-slate-700"
+              className="text-2xl text-white p-2 bg-[#1E1F26] rounded-md hover:bg-[#272831]"
             >
               {open ? <HiBarsArrowUp /> : <HiBarsArrowDown />}
             </button>
           </div>
-          <div className="flex text-white items-center gap-1 px-2 w-24 sm:w-80 bg-slate-800 rounded-md">
+          <div className="flex text-white items-center gap-1 px-2 w-24 sm:w-80 bg-[#1E1F26] rounded-md">
             <div className="left-4 top-2 text-lg">
               <IoSearch />
             </div>
@@ -41,15 +53,16 @@ const Navbar = () => {
           <Button size="sm" className="text-md bg-green-700 hover:bg-green-600">
             Sign Up
           </Button>
-          <Button size="sm" className="text-md bg-slate-800 hover:bg-slate-700">
+          <Button size="sm" className="text-md bg-[#1E1F26] hover:bg-[#272831]">
             Log In
           </Button>
         </div>
       </div>
       <div
+        ref={ref}
         className={`${
           open ? "flex" : "hidden"
-        } text-white absolute sm:w-[300px] sm:h-[280px] p-4 flex-col gap-4 bg-slate-800`}
+        } text-white absolute sm:w-[300px] sm:h-[280px] p-4 flex-col gap-4 bg-primary`}
       >
         <div className="flex flex-col gap-2">
           <p className="font-semibold">TRY OUT ONLINE EDITOR</p>

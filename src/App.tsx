@@ -1,9 +1,10 @@
-import Navbar from "./ui/shared/Navbar";
+import RootLayout from "./layout/RootLayout";
+// import Navbar from "./ui/shared/Navbar";
 
 const App = () => {
   return (
     <>
-      <Navbar />
+      <RootLayout />
     </>
   );
 };
