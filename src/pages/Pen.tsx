@@ -3,7 +3,7 @@ import PenNavbar from "@/ui/shared/PenNavbar";
 
 const Pen = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-screen w-full">
       <PenNavbar />
       <PenBody />
     </div>

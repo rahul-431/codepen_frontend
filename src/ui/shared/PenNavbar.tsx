@@ -8,12 +8,10 @@ import {
   HiMiniXMark,
 } from "react-icons/hi2";
 import { IoMdSettings } from "react-icons/io";
-import {
-  RiEdit2Fill,
-  RiLayout2Fill,
-  RiLayout3Fill,
-  RiLayout4Fill,
-} from "react-icons/ri";
+import { RiEdit2Fill, RiLayout2Fill, RiLayout4Fill } from "react-icons/ri";
+import { TfiLayoutTabWindow } from "react-icons/tfi";
+import LayoutFilter from "./LayoutFilter";
+import { useSearchParams } from "react-router-dom";
 
 const PenNavbar = () => {
   const [title, setTitle] = useState("Untitled");
@@ -22,6 +20,8 @@ const PenNavbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const layoutRef = useClickOutside(setOpenLayout, openLayout);
   const menuRef = useClickOutside(setOpenMenu, openMenu);
+  const [searchParam] = useSearchParams();
+  const layoutFilter = searchParam.get("layout") || "normal";
   return (
     <div className="flex justify-between py-2 px-2 sm:px-4  bg-black text-white">
       <div className="flex gap-3 items-center">
@@ -114,7 +114,13 @@ const PenNavbar = () => {
             }}
             className="p-2 rounded-md text-2xl bg-[#1E1F26] hover:bg-[#272831]"
           >
-            <RiLayout3Fill />
+            {layoutFilter === "left" ? (
+              <RiLayout2Fill />
+            ) : layoutFilter === "right" ? (
+              <RiLayout4Fill />
+            ) : (
+              <TfiLayoutTabWindow />
+            )}
           </button>
           {openLayout && (
             <div
@@ -123,17 +129,13 @@ const PenNavbar = () => {
               className="flex-col gap-2 p-4 absolute top-12 right-0 bg-[#1b1c22] rounded-md"
             >
               <p className="text-base font-semibold">Change View</p>
-              <div className=" flex gap-4 border border-white rounded-sm">
-                <button className="p-2 rounded-md text-2xl bg-[#1E1F26] hover:bg-[#383a47]">
-                  <RiLayout3Fill />
-                </button>
-                <button className="p-2 rounded-md text-2xl bg-[#1E1F26] hover:bg-[#383a47]">
-                  <RiLayout2Fill />
-                </button>
-                <button className="p-2 rounded-md text-2xl bg-[#1E1F26] hover:bg-[#383a47]">
-                  <RiLayout4Fill />
-                </button>
-              </div>
+              <LayoutFilter
+                options={[
+                  { value: "normal", icon: <TfiLayoutTabWindow /> },
+                  { value: "left", icon: <RiLayout2Fill /> },
+                  { value: "right", icon: <RiLayout4Fill /> },
+                ]}
+              />
             </div>
           )}{" "}
         </div>
