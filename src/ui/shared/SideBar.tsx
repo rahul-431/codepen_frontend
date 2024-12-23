@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BsLayoutTextSidebarReverse } from "react-icons/bs";
 import { TbArrowBigLeftLineFilled } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 const SideBar = () => {
   const [open, setOpen] = useState(true);
@@ -37,9 +38,12 @@ const SideBar = () => {
             <p className="font-semibold text-xs text-gray-500 tracking-wider">
               TRY OUT ONLINE EDITOR
             </p>
-            <button className="p-2 rounded-md border-4 border-green-800 hover:border-green-600 tex-white font-semibold bg-black text-lg">
+            <Link
+              to="/pen"
+              className=" text-center p-2 rounded-md border-4 border-green-800 hover:border-green-600 tex-white font-semibold bg-black text-lg"
+            >
               Start Coding
-            </button>
+            </Link>
           </div>
           <ul className="flex flex-col gap-4 text-lg text-white font-semibold">
             <li>Search Pens</li>
