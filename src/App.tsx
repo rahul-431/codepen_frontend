@@ -1,11 +1,15 @@
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
-// import Navbar from "./ui/shared/Navbar";
-
+import Home from "./pages/Home";
 const App = () => {
   return (
-    <>
-      <RootLayout />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<RootLayout />}>
+          <Route index element={<Home />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 };
 

@@ -8,8 +8,10 @@ const RootLayout = () => {
       <div className="hidden md:flex">
         <SideBar />
       </div>
-      <Navbar />
-      <Outlet />
+      <div className="flex flex-col w-full">
+        <Navbar />
+        <Outlet />
+      </div>
     </div>
   );
 };
