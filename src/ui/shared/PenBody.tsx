@@ -14,12 +14,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { setOpenResult } from "@/redux/slices/CodeSlice";
 import { RootState } from "@/redux/store";
 import Output from "./Output";
+import Console from "./Console";
+import { useState } from "react";
 
 const PenBody = () => {
   const [searchParam] = useSearchParams();
+  const [openConsole, setOpenConsole] = useState(false);
   const layoutFilter = searchParam.get("layout") || "normal";
   const dispatch = useDispatch();
   const openResult = useSelector((state: RootState) => state.openResult);
+  const handleCloseConsole = () => {
+    setOpenConsole((prev) => !prev);
+  };
   return (
     <section className="w-full h-full border-t border-slate-500 bg-black flex flex-col justify-between">
       {/* for mobile view */}
@@ -49,8 +55,8 @@ const PenBody = () => {
             <button
               onClick={() => dispatch(setOpenResult(!openResult))}
               className={` px-2 py-1 rounded-md ${
-                openResult ? "bg-white text-black" : "bg-[#383a47]"
-              } text-white`}
+                openResult ? "bg-white" : "bg-[#383a47]"
+              } text-black`}
             >
               Result
             </button>
@@ -62,24 +68,25 @@ const PenBody = () => {
               }`}
             >
               <TabsContent value="html">
-                <CodeEditor
-                  language="html"
-                  defaultValue="<h1>Hello World</h1>"
-                />
+                <CodeEditor language="html" />
               </TabsContent>
               <TabsContent value="css">
-                <CodeEditor language="css" defaultValue="h1{color:red}" />
+                <CodeEditor language="css" />
               </TabsContent>
               <TabsContent value="js">
-                <CodeEditor
-                  language="javascript"
-                  defaultValue="console.log('helloworld');"
-                />
+                <CodeEditor language="javascript" />
               </TabsContent>
             </div>
-            {openResult && (
-              <div className="bg-white min-w-80 min-h-48 max-h-60 sm:min-h-[432px]">
-                <Output />
+            {(openConsole || openResult) && (
+              <div
+                className={`bg-white min-w-80 min-h-48 max-h-60 sm:min-h-[432px] overflow-hidden`}
+              >
+                {/* // <div className="max-h-56 overflow-hidden"> */}
+                {!openConsole ? (
+                  <Output />
+                ) : (
+                  <Console close={handleCloseConsole} />
+                )}
               </div>
             )}
           </div>
@@ -91,11 +98,11 @@ const PenBody = () => {
         <ResizablePanelGroup
           direction={layoutFilter === "normal" ? "vertical" : "horizontal"}
         >
-          <ResizablePanel defaultSize={60}>
+          <ResizablePanel defaultSize={openConsole ? 40 : 60}>
             <ResizablePanelGroup
               direction={layoutFilter === "normal" ? "horizontal" : "vertical"}
             >
-              <ResizablePanel defaultSize={50} className="bg-primary">
+              <ResizablePanel defaultSize={34} className="bg-primary">
                 <div className="flex justify-between items-center p-1">
                   <h1 className="flex gap-1 items-center bg-[#383a47] text-white p-1 rounded font-semibold">
                     <span className="text-red-500 text-2xl">
@@ -107,10 +114,7 @@ const PenBody = () => {
                     <RiDropdownList />
                   </button>
                 </div>
-                <CodeEditor
-                  language="html"
-                  defaultValue="<h1>Hello World</h1>"
-                />
+                <CodeEditor language="html" />
               </ResizablePanel>
               <ResizableHandle
                 withHandle
@@ -124,7 +128,7 @@ const PenBody = () => {
                 }
                 className="bg-black w-4 border-r border-l border-slate-500"
               />
-              <ResizablePanel defaultSize={50} className="bg-primary">
+              <ResizablePanel defaultSize={33} className="bg-primary">
                 <div className="flex justify-between items-center p-1">
                   <h1 className="flex gap-1 items-center bg-[#383a47] text-white p-1 rounded font-semibold">
                     <span className="text-blue-500 text-2xl">
@@ -137,7 +141,7 @@ const PenBody = () => {
                     <RiDropdownList />
                   </button>
                 </div>
-                <CodeEditor language="css" defaultValue="h1{color:red}" />
+                <CodeEditor language="css" />
               </ResizablePanel>
               <ResizableHandle
                 withHandle
@@ -151,7 +155,7 @@ const PenBody = () => {
                 }
                 className="bg-black w-4 border-r border-l border-slate-500"
               />
-              <ResizablePanel defaultSize={50} className="bg-primary">
+              <ResizablePanel defaultSize={33} className="bg-primary">
                 <div className="flex justify-between items-center p-1">
                   <h1 className="flex gap-1 items-center bg-[#383a47] text-white p-1 rounded font-semibold">
                     <span className="text-yellow-500 text-2xl">
@@ -164,10 +168,7 @@ const PenBody = () => {
                     <RiDropdownList />
                   </button>
                 </div>
-                <CodeEditor
-                  language="javascript"
-                  defaultValue="console.log('helloworld');"
-                />
+                <CodeEditor language="javascript" />
               </ResizablePanel>
             </ResizablePanelGroup>
           </ResizablePanel>
@@ -178,13 +179,29 @@ const PenBody = () => {
             }
             className="bg-black w-4 border-r border-l border-slate-500"
           />
-          <ResizablePanel defaultSize={40} className="bg-white">
+
+          <ResizablePanel
+            defaultSize={openConsole ? 30 : 40}
+            className="bg-white"
+          >
             <Output />
           </ResizablePanel>
+          {openConsole && (
+            <>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={30}>
+                <Console close={handleCloseConsole} />
+              </ResizablePanel>
+            </>
+          )}
         </ResizablePanelGroup>
       </div>
       <div className="bg-slate-600 p-2 flex gap-2">
-        <Button className="bg-[#1E1F26] hover:bg-[#383a47]" size="sm">
+        <Button
+          onClick={() => setOpenConsole(!openConsole)}
+          className="bg-[#1E1F26] hover:bg-[#383a47]"
+          size="sm"
+        >
           Console
         </Button>
         <Button className="bg-[#1E1F26] hover:bg-[#383a47]" size="sm">
