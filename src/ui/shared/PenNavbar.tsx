@@ -126,10 +126,11 @@ const PenNavbar = () => {
             <div
               onClick={(e) => e.stopPropagation()}
               ref={layoutRef}
-              className="flex-col gap-2 p-4 absolute top-12 right-0 bg-[#1b1c22] rounded-md"
+              className="z-30 flex-col gap-2 p-4 absolute top-12 right-0 bg-[#1b1c22] rounded-md"
             >
               <p className="text-base font-semibold">Change View</p>
               <LayoutFilter
+                setOpenLayout={setOpenLayout}
                 options={[
                   { value: "normal", icon: <TfiLayoutTabWindow /> },
                   { value: "left", icon: <RiLayout2Fill /> },

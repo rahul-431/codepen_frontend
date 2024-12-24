@@ -4,7 +4,9 @@ import { TfiLayoutTabWindow } from "react-icons/tfi";
 import { ReactNode } from "react";
 const LayoutFilter = ({
   options,
+  setOpenLayout,
 }: {
+  setOpenLayout: React.Dispatch<React.SetStateAction<boolean>>;
   options: {
     value: string;
     icon: ReactNode;
@@ -16,6 +18,7 @@ const LayoutFilter = ({
   const handleClick = (value: string) => {
     searchParam.set("layout", value);
     setSearchParam(searchParam);
+    setOpenLayout(false);
   };
   return (
     <div className=" flex gap-4 border border-white rounded-sm">
