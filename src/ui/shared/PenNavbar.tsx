@@ -12,9 +12,13 @@ import { RiEdit2Fill, RiLayout2Fill, RiLayout4Fill } from "react-icons/ri";
 import { TfiLayoutTabWindow } from "react-icons/tfi";
 import LayoutFilter from "./LayoutFilter";
 import { useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { updateTitle } from "@/redux/slices/CodeSlice";
 
 const PenNavbar = () => {
-  const [title, setTitle] = useState("Untitled");
+  const title = useSelector((state: RootState) => state.title);
+  const dispatch = useDispatch();
   const [editTitle, setEditTitle] = useState(false);
   const [openLayout, setOpenLayout] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
@@ -37,7 +41,7 @@ const PenNavbar = () => {
                 type="text"
                 className="outline-none bg-transparent w-20"
                 autoFocus
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => dispatch(updateTitle(e.target.value))}
                 onKeyDown={(e) => {
                   if (e.key !== "Enter") return;
                   setEditTitle(false);

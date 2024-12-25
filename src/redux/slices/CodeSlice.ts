@@ -8,6 +8,7 @@ export interface CodeState {
   html: string;
   css: string;
   js: string;
+  title: string;
   openResult: boolean;
   logs: Log[];
 }
@@ -16,6 +17,7 @@ const initialState: CodeState = {
   html: "<h1>HelloWorld!</h1>",
   css: "h1{color:red}",
   js: "",
+  title: "Untitled",
   logs: [],
   openResult: true,
 };
@@ -42,11 +44,21 @@ export const codeSlice = createSlice({
     clearLogs(state) {
       state.logs = []; // Clear all logs
     },
+    updateTitle: (state, action: PayloadAction<string>) => {
+      state.title = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addCss, addHtml, addJs, setOpenResult, setLog, clearLogs } =
-  codeSlice.actions;
+export const {
+  addCss,
+  addHtml,
+  addJs,
+  setOpenResult,
+  setLog,
+  clearLogs,
+  updateTitle,
+} = codeSlice.actions;
 
 export default codeSlice.reducer;

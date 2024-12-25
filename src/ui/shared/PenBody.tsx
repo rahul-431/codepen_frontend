@@ -7,9 +7,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSearchParams } from "react-router-dom";
 import CodeEditor from "./CodeEditor";
-import { DiCssTricks } from "react-icons/di";
-import { RiDropdownList } from "react-icons/ri";
-import { FaHtml5, FaJsSquare } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpenResult } from "@/redux/slices/CodeSlice";
 import { RootState } from "@/redux/store";
@@ -103,17 +100,6 @@ const PenBody = () => {
               direction={layoutFilter === "normal" ? "horizontal" : "vertical"}
             >
               <ResizablePanel defaultSize={34} className="bg-primary">
-                <div className="flex justify-between items-center p-1">
-                  <h1 className="flex gap-1 items-center bg-[#383a47] text-white p-1 rounded font-semibold">
-                    <span className="text-red-500 text-2xl">
-                      <FaHtml5 />
-                    </span>
-                    <span>HTML</span>
-                  </h1>
-                  <button className="text-xl rounded text-white">
-                    <RiDropdownList />
-                  </button>
-                </div>
                 <CodeEditor language="html" />
               </ResizablePanel>
               <ResizableHandle
@@ -129,18 +115,6 @@ const PenBody = () => {
                 className="bg-black w-4 border-r border-l border-slate-500"
               />
               <ResizablePanel defaultSize={33} className="bg-primary">
-                <div className="flex justify-between items-center p-1">
-                  <h1 className="flex gap-1 items-center bg-[#383a47] text-white p-1 rounded font-semibold">
-                    <span className="text-blue-500 text-2xl">
-                      <DiCssTricks />
-                    </span>
-                    <span>CSS</span>
-                  </h1>
-
-                  <button className="text-xl rounded text-white">
-                    <RiDropdownList />
-                  </button>
-                </div>
                 <CodeEditor language="css" />
               </ResizablePanel>
               <ResizableHandle
@@ -156,18 +130,6 @@ const PenBody = () => {
                 className="bg-black w-4 border-r border-l border-slate-500"
               />
               <ResizablePanel defaultSize={33} className="bg-primary">
-                <div className="flex justify-between items-center p-1">
-                  <h1 className="flex gap-1 items-center bg-[#383a47] text-white p-1 rounded font-semibold">
-                    <span className="text-yellow-500 text-2xl">
-                      <FaJsSquare />
-                    </span>
-                    <span>JS</span>
-                  </h1>
-
-                  <button className="text-xl rounded text-white">
-                    <RiDropdownList />
-                  </button>
-                </div>
                 <CodeEditor language="javascript" />
               </ResizablePanel>
             </ResizablePanelGroup>
