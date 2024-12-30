@@ -2,12 +2,13 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { HiBarsArrowDown, HiBarsArrowUp } from "react-icons/hi2";
 import { IoSearch } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
   //close the modal when clicked outside
   useEffect(() => {
     const handleClick = (e: any) => {
@@ -50,11 +51,12 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex gap-2 md:gap-4">
-          <Button size="sm" className="text-md bg-green-700 hover:bg-green-600">
-            Sign Up
-          </Button>
-          <Button size="sm" className="text-md bg-[#1E1F26] hover:bg-[#272831]">
-            Log In
+          <Button
+            onClick={() => navigate("/auth")}
+            size="sm"
+            className="text-md bg-green-700 hover:bg-green-600"
+          >
+            Login
           </Button>
         </div>
       </div>

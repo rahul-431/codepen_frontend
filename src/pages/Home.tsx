@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { useGetPensQuery } from "@/redux/slices/penApiSlice";
 
 const Home = () => {
+  const { data: pens } = useGetPensQuery({});
+  console.log(pens);
+
   return (
     <main className="bg-primary h-full w-full p-10 flex flex-col sm:flex-row items-center gap-6">
       <div className="flex flex-col items-start justify-center sm:gap-10 gap-4">

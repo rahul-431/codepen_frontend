@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Pen from "./pages/Pen";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import Signup from "./features/auth/Authentication";
 const App = () => {
   return (
     <Provider store={store}>
@@ -11,6 +12,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<RootLayout />}>
             <Route index element={<Home />} />
+            <Route path="/auth" element={<Signup />} />
           </Route>
           <Route path="/pen" element={<Pen />}></Route>
         </Routes>

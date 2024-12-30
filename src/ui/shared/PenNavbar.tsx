@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCloud } from "react-icons/fa";
 import {
   HiMiniBarsArrowDown,
@@ -14,18 +14,70 @@ import LayoutFilter from "./LayoutFilter";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { updateTitle } from "@/redux/slices/CodeSlice";
+import { addCss, addHtml, addJs, updateTitle } from "@/redux/slices/CodeSlice";
+import {
+  useCreateNewPenMutation,
+  useGetCurrentPenQuery,
+  useUpdatePenMutation,
+} from "@/redux/slices/penApiSlice";
+import Spinner from "./Spinner";
 
 const PenNavbar = () => {
-  const title = useSelector((state: RootState) => state.title);
+  const title = useSelector((state: RootState) => state.code.title);
+  const html = useSelector((state: RootState) => state.code.html);
+  const css = useSelector((state: RootState) => state.code.css);
+  const js = useSelector((state: RootState) => state.code.js);
   const dispatch = useDispatch();
   const [editTitle, setEditTitle] = useState(false);
   const [openLayout, setOpenLayout] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const layoutRef = useClickOutside(setOpenLayout, openLayout);
   const menuRef = useClickOutside(setOpenMenu, openMenu);
-  const [searchParam] = useSearchParams();
+  const [searchParam, setSearchParam] = useSearchParams();
   const layoutFilter = searchParam.get("layout") || "normal";
+  const penId = searchParam && searchParam.get("id");
+  const [
+    createNewPen,
+    { isSuccess: isCreated, data, isLoading: isCreatingPen },
+  ] = useCreateNewPenMutation();
+  const [updatePen, { isLoading: isUpdating }] = useUpdatePenMutation();
+  const { data: currentPen, isSuccess } = useGetCurrentPenQuery(
+    { id: penId as string },
+    { skip: !penId }
+  );
+  //get current pen data from database
+  useEffect(() => {
+    if (currentPen && isSuccess) {
+      const { html, css, js, title } = currentPen;
+      if (html) dispatch(addHtml(html));
+      if (css) dispatch(addCss(css));
+      if (js) dispatch(addJs(js));
+      if (title) dispatch(updateTitle(title));
+    }
+  }, [currentPen, isSuccess, dispatch]);
+
+  //handle infinite re-render
+  useEffect(() => {
+    if (isCreated && data) {
+      searchParam.set("id", data._id);
+      setSearchParam(searchParam);
+    }
+  }, [isCreated, data, searchParam, setSearchParam]);
+
+  const handleCreatePen = () => {
+    createNewPen({ title, html, css, js });
+  };
+  const handleUpdatePen = () => {
+    if (penId) {
+      updatePen({ _id: penId, title, html, css, js });
+    }
+  };
+  const handleUpdateTitle = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && penId) {
+      updatePen({ _id: penId, title });
+      setEditTitle(false);
+    }
+  };
   return (
     <div className="flex justify-between py-2 px-2 sm:px-4  bg-black text-white">
       <div className="flex gap-3 items-center">
@@ -40,19 +92,16 @@ const PenNavbar = () => {
               <input
                 type="text"
                 className="outline-none bg-transparent w-20"
-                autoFocus
+                // autoFocus={true}
                 onChange={(e) => dispatch(updateTitle(e.target.value))}
-                onKeyDown={(e) => {
-                  if (e.key !== "Enter") return;
-                  setEditTitle(false);
-                }}
+                onKeyDown={handleUpdateTitle}
               />
             ) : (
               <p
                 onDoubleClick={() => setEditTitle(true)}
                 className="text-lg sm:text-xl font-extrabold"
               >
-                {title}
+                {title || "Untitled"}
               </p>
             )}
             <button
@@ -70,12 +119,29 @@ const PenNavbar = () => {
         </div>
       </div>
       <div className="flex items-center gap-2 relative">
-        <Button className="hidden md:flex gap-2 text-lg bg-[#1E1F26] hover:bg-[#383a47]">
-          <span>
-            <FaCloud />
-          </span>
-          <span>Save</span>
-        </Button>
+        {!penId ? (
+          <Button
+            disabled={isCreated}
+            onClick={handleCreatePen}
+            className="hidden md:flex gap-2 text-lg bg-[#1E1F26] hover:bg-[#383a47]"
+          >
+            <span>
+              <FaCloud />
+            </span>
+            <span>{isCreatingPen ? <Spinner /> : "Save"}</span>
+          </Button>
+        ) : (
+          <Button
+            disabled={isUpdating}
+            onClick={handleUpdatePen}
+            className="hidden md:flex gap-2 text-lg bg-[#1E1F26] hover:bg-[#383a47]"
+          >
+            <span>
+              <FaCloud />
+            </span>
+            <span>{isUpdating ? <Spinner /> : "update"}</span>
+          </Button>
+        )}
         <Button className="hidden md:flex gap-2 text-lg bg-[#1E1F26] hover:bg-[#383a47]">
           <span>
             <IoMdSettings />
@@ -96,12 +162,27 @@ const PenNavbar = () => {
             ref={menuRef}
             className="flex md:hidden p-1 gap-1 flex-col items-start absolute top-12 sm:top-16 -right-2 sm:-right-4 w-full z-20 bg-[#1b1c22] "
           >
-            <Button className="w-full flex gap-2 text-base sm:text-lg bg-[#1E1F26] hover:bg-[#383a47]">
-              <span>
-                <FaCloud />
-              </span>
-              <span>Save</span>
-            </Button>
+            {penId ? (
+              <Button
+                onClick={handleUpdatePen}
+                className="w-full flex gap-2 text-base sm:text-lg bg-[#1E1F26] hover:bg-[#383a47]"
+              >
+                <span>
+                  <FaCloud />
+                </span>
+                <span>{isCreatingPen ? <Spinner /> : "Save"}</span>
+              </Button>
+            ) : (
+              <Button
+                onClick={handleCreatePen}
+                className="w-full flex gap-2 text-base sm:text-lg bg-[#1E1F26] hover:bg-[#383a47]"
+              >
+                <span>
+                  <FaCloud />
+                </span>
+                <span>{isCreatingPen ? <Spinner /> : "Save"}</span>
+              </Button>
+            )}
             <Button className="w-full flex gap-2 text-base sm:text-lg bg-[#1E1F26] hover:bg-[#383a47]">
               <span>
                 <IoMdSettings />

@@ -2,9 +2,9 @@ import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 
 const Output = () => {
-  const css = useSelector((state: RootState) => state.css);
-  const html = useSelector((state: RootState) => state.html);
-  const js = useSelector((state: RootState) => state.js);
+  const css = useSelector((state: RootState) => state.code.css);
+  const html = useSelector((state: RootState) => state.code.html);
+  const js = useSelector((state: RootState) => state.code.js);
   const combinedCode = `
       <html>
         <head>

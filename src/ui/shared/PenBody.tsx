@@ -19,10 +19,11 @@ const PenBody = () => {
   const [openConsole, setOpenConsole] = useState(false);
   const layoutFilter = searchParam.get("layout") || "normal";
   const dispatch = useDispatch();
-  const openResult = useSelector((state: RootState) => state.openResult);
+  const openResult = useSelector((state: RootState) => state.code.openResult);
   const handleCloseConsole = () => {
     setOpenConsole((prev) => !prev);
   };
+
   return (
     <section className="w-full h-full border-t border-slate-500 bg-black flex flex-col justify-between">
       {/* for mobile view */}
