@@ -26,7 +26,7 @@ const AppLayout = () => {
   }
   if (isLoading) {
     return (
-      <div className="h-screen bg-primary">
+      <div className="h-screen bg-primary flex items-center justify-center">
         <Spinner />
       </div>
     );

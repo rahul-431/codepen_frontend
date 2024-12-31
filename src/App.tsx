@@ -16,6 +16,7 @@ import AppLayout from "./layout/AppLayout";
 import YourWork from "./pages/YourWork";
 import Following from "./pages/Following";
 import Trending from "./pages/Trending";
+import Profile from "./pages/Profile";
 const App = () => {
   return (
     <>
@@ -38,6 +39,7 @@ const App = () => {
               <Route path="your-work" element={<YourWork />} />
               <Route path="following" element={<Following />} />
               <Route path="trending" element={<Trending />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
 
             <Route path="pen" element={<Pen />}></Route>

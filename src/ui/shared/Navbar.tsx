@@ -126,10 +126,16 @@ const Navbar = () => {
                 />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-[#1E1F26] text-white space-y-2 p-2 border-none min-w-40">
-                <DropdownMenuItem className="text-md font-semibold">
+                <DropdownMenuItem
+                  onClick={() => navigate("your-work")}
+                  className="text-md font-semibold"
+                >
                   Your work
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-semibold">
+                <DropdownMenuItem
+                  onClick={() => navigate("profile")}
+                  className="text-md font-semibold"
+                >
                   Profile
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

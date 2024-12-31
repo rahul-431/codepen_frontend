@@ -45,3 +45,27 @@ type Token = {
 type CurrentUserRequest = {
   accessToken: string;
 };
+type Collection = {
+  _id: string;
+  title: string;
+  createdAt?: string;
+  updatedAt?: string;
+  author?: string;
+  stats?: {
+    views: number;
+    likes: number;
+    comments: number;
+  };
+};
+type CollectionCard = {
+  data: Collection;
+};
+type PenCard = Pen & {
+  createdAt?: string;
+  updatedAt?: string;
+  stats?: {
+    views: number;
+    likes: number;
+    comments: number;
+  };
+};

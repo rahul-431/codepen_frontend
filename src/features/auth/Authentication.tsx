@@ -103,7 +103,7 @@ function Authentication() {
         localStorage.setItem("refreshToken", token.refreshToken);
       }
       toast.success("User logged in successfully");
-      navigate("/");
+      navigate("/app");
     } catch (error) {
       console.error(error);
       toast.error("Login failed. Please check your credentials.");
