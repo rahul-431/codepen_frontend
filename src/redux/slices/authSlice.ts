@@ -1,7 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: AuthSlice = {
-  user: { _id: "", name: "", email: "", pens: [] },
+  user: {
+    _id: "",
+    name: "",
+    email: "",
+    pens: [],
+    collections: [],
+    followers: [],
+    following: [],
+  },
   token: {
     accessToken: "",
     refreshToken: "",

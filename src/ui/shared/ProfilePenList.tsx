@@ -3,8 +3,10 @@ import Filter from "./Filter";
 import { FaThList } from "react-icons/fa";
 import PenCard from "./PenCard";
 import TableView from "./TableView";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import EmptyBox from "./EmptyBox";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const ProfilePenList = () => {
   const [searchParam] = useSearchParams();
@@ -13,7 +15,8 @@ const ProfilePenList = () => {
     !layoutFilterValue || layoutFilterValue === "grid"
       ? "grid"
       : layoutFilterValue;
-  const pens: PenCard[] = [];
+  const pens: PenResponse[] = useSelector((state: RootState) => state.pen.pens);
+  const navigate = useNavigate();
   return (
     <>
       <div className="flex items-center justify-between">
@@ -47,7 +50,10 @@ const ProfilePenList = () => {
             pens.map((item) => <PenCard data={item} />)
           ) : (
             <EmptyBox label="Pen">
-              <button className="p-2 rounded-md bg-green-900 hover:bg-green-600">
+              <button
+                onClick={() => navigate("/pen")}
+                className="p-2 rounded-md bg-green-900 hover:bg-green-600"
+              >
                 Create New Pen
               </button>
             </EmptyBox>

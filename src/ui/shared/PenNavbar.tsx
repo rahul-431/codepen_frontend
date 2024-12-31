@@ -7,20 +7,23 @@ import {
   HiMiniBarsArrowUp,
   HiMiniXMark,
 } from "react-icons/hi2";
+
 import { IoMdSettings } from "react-icons/io";
 import { RiEdit2Fill, RiLayout2Fill, RiLayout4Fill } from "react-icons/ri";
 import { TfiLayoutTabWindow } from "react-icons/tfi";
 import LayoutFilter from "./LayoutFilter";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { addCss, addHtml, addJs, updateTitle } from "@/redux/slices/CodeSlice";
+import { updateTitle } from "@/redux/slices/CodeSlice";
 import {
   useCreateNewPenMutation,
-  useGetCurrentPenQuery,
   useUpdatePenMutation,
 } from "@/redux/slices/penApiSlice";
 import Spinner from "./Spinner";
+import { toast } from "sonner";
+import UserAction from "./UserAction";
+import { useCurrentPen } from "@/hooks/useCurrentPen";
 
 const PenNavbar = () => {
   const title = useSelector((state: RootState) => state.code.title);
@@ -36,25 +39,18 @@ const PenNavbar = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const layoutFilter = searchParam.get("layout") || "normal";
   const penId = searchParam && searchParam.get("id");
+
+  const navigate = useNavigate();
+  const authUser = useSelector((state: RootState) => state.auth.user);
   const [
     createNewPen,
     { isSuccess: isCreated, data, isLoading: isCreatingPen },
   ] = useCreateNewPenMutation();
+  const accessToken = localStorage.getItem("accessToken");
   const [updatePen, { isLoading: isUpdating }] = useUpdatePenMutation();
-  const { data: currentPen, isSuccess } = useGetCurrentPenQuery(
-    { id: penId as string },
-    { skip: !penId }
-  );
-  //get current pen data from database
-  useEffect(() => {
-    if (currentPen && isSuccess) {
-      const { html, css, js, title } = currentPen;
-      if (html) dispatch(addHtml(html));
-      if (css) dispatch(addCss(css));
-      if (js) dispatch(addJs(js));
-      if (title) dispatch(updateTitle(title));
-    }
-  }, [currentPen, isSuccess, dispatch]);
+
+  //getting current pen
+  useCurrentPen();
 
   //handle infinite re-render
   useEffect(() => {
@@ -65,26 +61,51 @@ const PenNavbar = () => {
   }, [isCreated, data, searchParam, setSearchParam]);
 
   const handleCreatePen = () => {
-    createNewPen({ title, html, css, js });
+    if (accessToken) {
+      createNewPen({
+        title,
+        html,
+        css,
+        js,
+        accessToken: accessToken as string,
+      });
+      toast.success("New Pen Created successfully");
+    } else {
+      toast.error("User session in expired or Login first");
+      navigate("/auth");
+    }
   };
   const handleUpdatePen = () => {
-    if (penId) {
-      updatePen({ _id: penId, title, html, css, js });
+    if (penId && accessToken) {
+      updatePen({
+        _id: penId,
+        title,
+        html,
+        css,
+        js,
+        accessToken: accessToken as string,
+      });
+      toast.success("Pen Updated successfully");
+    } else {
+      toast.error("User session in expired login first");
+      navigate("/auth");
     }
   };
   const handleUpdateTitle = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && penId) {
       updatePen({ _id: penId, title });
       setEditTitle(false);
+      toast.success("Title updated succesfully");
     }
   };
   return (
     <div className="flex justify-between py-2 px-2 sm:px-4  bg-black text-white">
       <div className="flex gap-3 items-center">
         <img
+          onClick={() => navigate("/")}
           src="https://blog.codepen.io/wp-content/uploads/2023/09/logo-white.png"
           alt="logo"
-          className="h-8 w-8 sm:h-12 sm:w-12"
+          className="h-8 w-8 sm:h-12 sm:w-12 cursor-pointer"
         />
         <div className="flex flex-col gap-1">
           <div className="flex gap-1 sm:gap-2 items-center">
@@ -114,7 +135,9 @@ const PenNavbar = () => {
             </button>
           </div>
           <p className="hidden sm:block text-slate-600 font-semibold">
-            Captain Anonymous
+            {(authUser && authUser._id) || accessToken
+              ? authUser?.name.toUpperCase()
+              : "Captain Anonymous"}
           </p>
         </div>
       </div>
@@ -223,14 +246,18 @@ const PenNavbar = () => {
                 ]}
               />
             </div>
-          )}{" "}
+          )}
         </div>
-        <Button className="text-base md:text-lg bg-green-700 hover:bg-green-600">
-          Sign Up
-        </Button>
-        <Button className="text-base md:text-lg bg-[#1E1F26] hover:bg-[#383a47]">
-          Login
-        </Button>
+        {(authUser && authUser._id) || accessToken ? (
+          <UserAction />
+        ) : (
+          <Button
+            onClick={() => navigate("/auth")}
+            className="text-base md:text-lg bg-green-700 hover:bg-green-600"
+          >
+            Login
+          </Button>
+        )}
       </div>
     </div>
   );

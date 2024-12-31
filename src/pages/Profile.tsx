@@ -30,11 +30,11 @@ const Profile = () => {
         </div>
         <div className=" bg-black w-full h-[20%] flex items-center justify-end text-white gap-4 px-4">
           <p className="space-x-1">
-            <span>0</span>
+            <span>{user?.followers?.length || 0}</span>
             <span>Followers</span>
           </p>
           <p className="space-x-1">
-            <span>0</span>
+            <span>{user?.following?.length || 0}</span>
             <span>Following</span>
           </p>
         </div>

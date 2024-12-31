@@ -5,9 +5,11 @@ type Pen = {
   css?: string;
   js?: string;
   author?: string;
+  accessToken?: string;
 };
 type CurrentPenRequest = {
   id: string;
+  accessToken: string;
 };
 type RegisterForm = {
   name: string;
@@ -20,22 +22,17 @@ type LoginForm = {
   password: string;
 };
 type AuthSlice = {
-  user: {
-    _id: string;
-    name: string;
-    email: string;
-    pens: [];
-  } | null;
-  token: {
-    accessToken: string;
-    refreshToken: string;
-  } | null;
+  user: User;
+  token: Token;
 };
 type User = {
   _id: string;
   name: string;
   email: string;
   pens: [];
+  collections: [];
+  followers: [];
+  following: [];
 } | null;
 type Token = {
   accessToken: string;
@@ -51,21 +48,36 @@ type Collection = {
   createdAt?: string;
   updatedAt?: string;
   author?: string;
+  type?: string;
   stats?: {
-    views: number;
-    likes: number;
-    comments: number;
+    views: string[];
+    likes: string[];
+    comments: string[];
   };
 };
 type CollectionCard = {
   data: Collection;
 };
+type PenResponse = {
+  _id: string;
+  title: string;
+  code?: { html?: string; css?: string; js?: string };
+  author?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  type?: string;
+  stats?: {
+    views: string[];
+    likes: string[];
+    comments: string[];
+  };
+};
 type PenCard = Pen & {
   createdAt?: string;
   updatedAt?: string;
   stats?: {
-    views: number;
-    likes: number;
-    comments: number;
+    views: string[];
+    likes: string[];
+    comments: string[];
   };
 };

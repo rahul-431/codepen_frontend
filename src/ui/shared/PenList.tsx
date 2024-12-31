@@ -10,8 +10,12 @@ import {
 import { FaTags, FaThList } from "react-icons/fa";
 import { TfiLayoutGrid3Alt } from "react-icons/tfi";
 import PenCard from "./PenCard";
+import EmptyBox from "./EmptyBox";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const PenList = () => {
+  const pens: PenResponse[] = useSelector((state: RootState) => state.pen.pens);
   return (
     <div className="w-full h-full flex flex-col gap-5">
       <div className="flex items-center justify-between bg-[#383a47] p-2 rounded-md">
@@ -57,11 +61,15 @@ const PenList = () => {
         </div>
       </div>
       <div className="flex flex-wrap gap-4 p-2">
-        <PenCard />
-        <PenCard />
-        <PenCard />
-        <PenCard />
-        <PenCard />
+        {pens && pens.length > 0 ? (
+          pens.map((item) => <PenCard data={item} />)
+        ) : (
+          <EmptyBox label="Pen">
+            <button className="p-2 rounded-md bg-green-900 hover:bg-green-600">
+              Create New Pen
+            </button>
+          </EmptyBox>
+        )}
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
@@ -7,7 +8,7 @@ type TableView = {
   headers: {
     label: string;
   }[];
-  data: PenCard[] | Collection[];
+  data: PenResponse[] | Collection[];
 };
 const TableView = ({ headers, data }: TableView) => {
   return (
@@ -23,30 +24,32 @@ const TableView = ({ headers, data }: TableView) => {
           <td className="p-2">
             <Link to={`/pen?${item._id}`}>{item.title}</Link>
           </td>
-          <td>{item.createdAt}</td>
-          <td>{item.updatedAt}</td>
+          <td>{format(new Date(item.createdAt as string), "MMM dd yyyy,p")}</td>
+          <td>{format(new Date(item.updatedAt as string), "MMM dd yyyy,p")}</td>
           <td className="flex items-center gap-2 justify-center p-2">
             <div className="flex  space-x-1 items-center bg-[#383a47] px-1 rounded-sm">
               <span>
                 <AiFillLike />
               </span>
-              <span>{item.stats?.likes || 0}</span>
+              <span>{item.stats?.likes.length || 0}</span>
             </div>
             <div className="flex  space-x-1 items-center bg-[#383a47] px-1 rounded-sm">
               <span>
                 <FaCommentAlt />
               </span>
-              <span>{item.stats?.comments || 0}</span>
+              <span>{item.stats?.comments.length || 0}</span>
             </div>
             <div className="flex  space-x-1 items-center bg-[#383a47] px-1 rounded-sm">
               <span>
                 <IoEyeSharp />
               </span>
-              <span>{item.stats?.views || 0}</span>
+              <span>{item.stats?.views.length || 0}</span>
             </div>
           </td>
           <td>
-            <HiEllipsisHorizontal />
+            <button className="text-3xl hover:bg-[#383a47] rounded">
+              <HiEllipsisHorizontal />
+            </button>
           </td>
         </tr>
       ))}

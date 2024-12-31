@@ -1,23 +1,11 @@
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { AiOutlineLayout } from "react-icons/ai";
 import { RootState } from "@/redux/store";
 import { useEffect, useRef, useState } from "react";
-import { BsCollection } from "react-icons/bs";
 import { HiBarsArrowDown, HiBarsArrowUp } from "react-icons/hi2";
-import { IoIosLogOut } from "react-icons/io";
-import { IoSearch, IoSettingsOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
+import { IoSearch } from "react-icons/io5";
+import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useLogoutMutation } from "@/redux/slices/authApiSlice";
-import { toast } from "sonner";
-import { removeUser } from "@/redux/slices/authSlice";
+import UserAction from "./UserAction";
 
 const Navbar = () => {
   const [search, setSearch] = useState("");
@@ -27,9 +15,7 @@ const Navbar = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const { pathname } = useLocation();
   const arr = pathname.split("/");
-  const [logout] = useLogoutMutation();
-  const dispatch = useDispatch();
-  const accessToken = localStorage.getItem("accessToken");
+
   //close the modal when clicked outside
   useEffect(() => {
     const handleClick = (e: any) => {
@@ -40,16 +26,6 @@ const Navbar = () => {
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [open]);
-  const handleLogout = async () => {
-    if (accessToken) {
-      await logout({ accessToken: accessToken });
-    }
-    dispatch(removeUser());
-    localStorage.clear();
-    navigate("/");
-    toast.success("Logout successfully");
-  };
-  const createNewPen = () => {};
   return (
     <div className="relative w-full">
       <div className="bg-black px-2 md:px-12 py-3 flex justify-between items-center w-full">
@@ -117,61 +93,7 @@ const Navbar = () => {
         </div>
         <div className="flex gap-2 md:gap-4">
           {user?._id ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <img
-                  src="https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="user profile"
-                  className="w-12 h-12 object-contain rounded-md"
-                />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-[#1E1F26] text-white space-y-2 p-2 border-none min-w-40">
-                <DropdownMenuItem
-                  onClick={() => navigate("your-work")}
-                  className="text-md font-semibold"
-                >
-                  Your work
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => navigate("profile")}
-                  className="text-md font-semibold"
-                >
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={createNewPen}
-                  className="text-md font-semibold"
-                >
-                  <span>
-                    <AiOutlineLayout />
-                  </span>
-                  New Pen
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-semibold">
-                  <span>
-                    <BsCollection />
-                  </span>
-                  <span>New Collection</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-md font-semibold">
-                  <span>
-                    <IoSettingsOutline />
-                  </span>
-                  <span>Settings</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={handleLogout}
-                  className="text-md font-semibold"
-                >
-                  <span className="text-xl">
-                    <IoIosLogOut />
-                  </span>
-                  <span>Logout</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <UserAction />
           ) : (
             <Button
               onClick={() => navigate("/auth")}

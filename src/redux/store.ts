@@ -3,13 +3,14 @@ import codeReducer from "./slices/CodeSlice";
 import { penApiSlice } from "./slices/penApiSlice";
 import { authApiSlice } from "./slices/authApiSlice";
 import authReducer from "./slices/authSlice";
-
+import penReducer from "./slices/penSlice";
 export const store = configureStore({
   reducer: {
     code: codeReducer,
     [penApiSlice.reducerPath]: penApiSlice.reducer,
     [authApiSlice.reducerPath]: authApiSlice.reducer,
     auth: authReducer,
+    pen: penReducer,
   },
 
   //caching and other benefits from rtk query

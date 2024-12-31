@@ -5,7 +5,7 @@ import { MdOutlineClear } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 
 const Console = ({ close }: { close: () => void }) => {
-  const logs = useSelector((state: RootState) => state.logs);
+  const logs = useSelector((state: RootState) => state.code.logs);
   const dispatch = useDispatch();
   useEffect(() => {
     // Add event listener once when the component mounts
@@ -53,7 +53,9 @@ const Console = ({ close }: { close: () => void }) => {
           <div
             key={index}
             className={`p-2 border-b border-slate-700 ${
-              log.method === "error" ? "bg-red-800 text-white" : "text-green"
+              log.method === "error"
+                ? "bg-red-800 text-white"
+                : "text-green-400"
             }`}
           >
             <p>{log.args}</p>

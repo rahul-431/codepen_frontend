@@ -28,19 +28,19 @@ const CollectionCard = ({ data }: CollectionCard) => {
               <span>
                 <AiFillLike />
               </span>
-              <span>{data.stats?.likes || 0}</span>
+              <span>{data.stats?.likes.length || 0}</span>
             </Button>
             <Button>
               <span>
                 <FaCommentAlt />
               </span>
-              <span>{data.stats?.comments || 0}</span>
+              <span>{data.stats?.comments.length || 0}</span>
             </Button>
             <Button>
               <span>
                 <IoEyeSharp />
               </span>
-              <span>{data.stats?.views || 0}</span>
+              <span>{data.stats?.views.length || 0}</span>
             </Button>
           </div>
           <Button

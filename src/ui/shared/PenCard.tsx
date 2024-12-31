@@ -5,7 +5,7 @@ import { HiArrowsPointingOut, HiEllipsisHorizontal } from "react-icons/hi2";
 import { IoEyeSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
-const PenCard = ({ data }: { data: PenCard }) => {
+const PenCard = ({ data }: { data: PenResponse }) => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col w-96 h-80 rounded-md bg-[#1E1F26] p-4">
@@ -14,7 +14,10 @@ const PenCard = ({ data }: { data: PenCard }) => {
       </div>
       <div className="h-[20%] mt-2">
         <div className="flex justify-between items-center">
-          <p className="text-white text-lg">{data.title}</p>
+          <p className="text-white text-lg space-x-2">
+            <span>{data.title}</span>
+            <span className="bg-green-900 px-1 rounded">{data.type}</span>
+          </p>
           <button className="text-white text-3xl">
             <HiEllipsisHorizontal />
           </button>
@@ -25,19 +28,19 @@ const PenCard = ({ data }: { data: PenCard }) => {
               <span>
                 <AiFillLike />
               </span>
-              <span>{data.stats?.likes || 0}</span>
+              <span>{data.stats?.likes.length || 0}</span>
             </Button>
             <Button>
               <span>
                 <FaCommentAlt />
               </span>
-              <span>{data.stats?.comments || 0}</span>
+              <span>{data.stats?.comments.length || 0}</span>
             </Button>
             <Button>
               <span>
                 <IoEyeSharp />
               </span>
-              <span>{data.stats?.views || 0}</span>
+              <span>{data.stats?.views.length || 0}</span>
             </Button>
           </div>
           <Button
