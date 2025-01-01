@@ -63,9 +63,9 @@ type PenResponse = {
   title: string;
   code?: { html?: string; css?: string; js?: string };
   author?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  type?: string;
+  createdAt: string;
+  updatedAt: string;
+  type: string;
   stats?: {
     views: string[];
     likes: string[];
@@ -80,4 +80,13 @@ type PenCard = Pen & {
     likes: string[];
     comments: string[];
   };
+};
+
+type ChangeTypeRequest = {
+  accessToken: string;
+  value: string;
+  id: string;
+};
+type StateDeleteType = {
+  id: string;
 };

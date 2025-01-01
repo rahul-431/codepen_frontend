@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
-import { HiArrowsPointingOut, HiEllipsisHorizontal } from "react-icons/hi2";
+import { HiArrowsPointingOut } from "react-icons/hi2";
 import { IoEyeSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import PenCardAction from "./PenCardAction";
 
 const PenCard = ({ data }: { data: PenResponse }) => {
   const navigate = useNavigate();
@@ -16,11 +17,15 @@ const PenCard = ({ data }: { data: PenResponse }) => {
         <div className="flex justify-between items-center">
           <p className="text-white text-lg space-x-2">
             <span>{data.title}</span>
-            <span className="bg-green-900 px-1 rounded">{data.type}</span>
+            <span
+              className={`${
+                data.type === "public" ? "bg-green-900" : "bg-yellow-900"
+              } px-1 rounded`}
+            >
+              {data.type}
+            </span>
           </p>
-          <button className="text-white text-3xl">
-            <HiEllipsisHorizontal />
-          </button>
+          <PenCardAction penId={data._id} type={data.type} />
         </div>
         <div className="flex justify-between items-center">
           <div className="space-x-2 mt-2">

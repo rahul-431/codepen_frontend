@@ -53,6 +53,43 @@ export const penApiSlice = createApi({
           },
         }),
       }),
+      changeType: builder.mutation<PenResponse, ChangeTypeRequest>({
+        query: ({ accessToken, value, id }) => ({
+          url: `/${id}`,
+          method: "POST",
+          body: { value: value },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+      }),
+      permanentDeletePen: builder.mutation<void, CurrentPenRequest>({
+        query: ({ id, accessToken }) => ({
+          url: `/${id}`,
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+      }),
+      tempDeletePen: builder.mutation<void, CurrentPenRequest>({
+        query: ({ id, accessToken }) => ({
+          url: `/tempDel/${id}`,
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+      }),
+      getTempDelPens: builder.query<PenResponse[], CurrentUserRequest>({
+        query: ({ accessToken }) => ({
+          url: "/tempDel",
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+      }),
     };
   },
 });
@@ -63,4 +100,7 @@ export const {
   useUpdatePenMutation,
   useGetCurrentPenQuery,
   useGetCurrentPensQuery,
+  useChangeTypeMutation,
+  usePermanentDeletePenMutation,
+  useTempDeletePenMutation,
 } = penApiSlice;
