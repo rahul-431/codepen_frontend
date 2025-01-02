@@ -35,6 +35,11 @@ const LayoutFilter = ({
           {option.icon}
         </button>
       ))}
+      <div className="hidden">
+        <RiLayout2Fill />
+        <RiLayout4Fill />
+        <TfiLayoutTabWindow />
+      </div>
     </div>
   );
 };
