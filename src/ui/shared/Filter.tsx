@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 export default function Filter({
   filterField,
   options,
-  classname = "p-1 rounded-sm  hover:bg-green-600 font-semibold text-white w-20",
+  classname = "p-1 rounded-sm  hover:bg-green-600 font-semibold text-white sm:w-20",
 }: {
   filterField: string;
   classname?: string;
@@ -17,9 +17,6 @@ export default function Filter({
   const [searchParam, setSearchParam] = useSearchParams();
   const currentFilter = searchParam.get(filterField) || options[0].value;
   function handleClick(value: string) {
-    // if (searchParam.get("page")) {
-    //   searchParam.set("page", 1);
-    // }
     searchParam.set(filterField, value);
     setSearchParam(searchParam);
   }

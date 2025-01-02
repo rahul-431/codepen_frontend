@@ -1,18 +1,20 @@
 import { format } from "date-fns";
 import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
-import { HiEllipsisHorizontal } from "react-icons/hi2";
 import { IoEyeSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import PenCardAction from "./PenCardAction";
+import CollectionCardAction from "./CollectionCardAction";
 type TableView = {
   headers: {
     label: string;
   }[];
+  type: string;
   data: PenResponse[] | Collection[];
 };
-const TableView = ({ headers, data }: TableView) => {
+const TableView = ({ headers, data, type }: TableView) => {
   return (
-    <table className="text-white w-full mt-2 mb-4 ">
+    <table className="text-white w-full mt-2 mb-4 overflow-x-auto">
       <tr className=" bg-[#383a47] text-center">
         {headers.map((item) => (
           <th className="p-2">{item.label}</th>
@@ -21,8 +23,24 @@ const TableView = ({ headers, data }: TableView) => {
       </tr>
       {data.map((item) => (
         <tr className="text-center" key={item._id}>
-          <td className="p-2">
-            <Link to={`/pen?${item._id}`}>{item.title}</Link>
+          <td className="space-x-2">
+            <Link
+              className="text-green-600"
+              to={
+                type === "pen"
+                  ? `/pen?id=${item._id}`
+                  : `/app/collection?id=${item._id}`
+              }
+            >
+              {item.title}
+            </Link>
+            <span
+              className={`${
+                item.type === "public" ? "bg-green-900" : "bg-yellow-900"
+              } px-1 rounded`}
+            >
+              {item.type}
+            </span>
           </td>
           <td>{format(new Date(item.createdAt as string), "MMM dd yyyy,p")}</td>
           <td>{format(new Date(item.updatedAt as string), "MMM dd yyyy,p")}</td>
@@ -47,9 +65,15 @@ const TableView = ({ headers, data }: TableView) => {
             </div>
           </td>
           <td>
-            <button className="text-3xl hover:bg-[#383a47] rounded">
-              <HiEllipsisHorizontal />
-            </button>
+            {type === "pen" ? (
+              <PenCardAction penId={item._id} key={item._id} type={item.type} />
+            ) : (
+              <CollectionCardAction
+                colId={item._id}
+                key={item._id}
+                type={item.type}
+              />
+            )}
           </td>
         </tr>
       ))}

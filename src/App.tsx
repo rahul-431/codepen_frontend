@@ -18,6 +18,7 @@ import Following from "./pages/Following";
 import Trending from "./pages/Trending";
 import Profile from "./pages/Profile";
 import NewCollection from "./pages/NewCollection";
+import Collection from "./pages/Collection";
 const App = () => {
   return (
     <>
@@ -42,6 +43,7 @@ const App = () => {
               <Route path="trending" element={<Trending />} />
               <Route path="profile" element={<Profile />} />
               <Route path="create-collection" element={<NewCollection />} />
+              <Route path="collection" element={<Collection />} />
             </Route>
 
             <Route path="pen" element={<Pen />}></Route>

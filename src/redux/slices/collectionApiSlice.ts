@@ -15,7 +15,10 @@ export const collectionApiSlice = createApi({
           },
         }),
       }),
-      getCurrentCollection: builder.query<Collection, CurrentPenRequest>({
+      getCurrentCollection: builder.query<
+        CurrentCollectionResponse,
+        CurrentPenRequest
+      >({
         query: ({ id, accessToken }) => ({
           url: `/current/${id}`,
           method: "GET",
@@ -28,6 +31,16 @@ export const collectionApiSlice = createApi({
         query: ({ accessToken, ...collection }) => ({
           url: "/",
           method: "POST",
+          body: collection,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+      }),
+      updateCollectionApi: builder.mutation<Collection, CollectionRequest>({
+        query: ({ id, accessToken, ...collection }) => ({
+          url: `/${id}`,
+          method: "PUT",
           body: collection,
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -103,4 +116,5 @@ export const {
   usePermanentDeleteCollectionMutation,
   useTempDeleteCollectionMutation,
   useRestoreCollectionMutation,
+  useUpdateCollectionApiMutation,
 } = collectionApiSlice;

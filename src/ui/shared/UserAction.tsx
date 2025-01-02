@@ -14,7 +14,6 @@ import { useLogoutMutation } from "@/redux/slices/authApiSlice";
 import { toast } from "sonner";
 import { removeUser } from "@/redux/slices/authSlice";
 import { useDispatch } from "react-redux";
-import { CreateNewCollection } from "../CreateNewCollection";
 
 const UserAction = () => {
   const navigate = useNavigate();

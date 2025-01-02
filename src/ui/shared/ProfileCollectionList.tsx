@@ -17,10 +17,16 @@ const ProfileCollectionList = () => {
     !layoutFilterValue || layoutFilterValue === "grid"
       ? "grid"
       : layoutFilterValue;
+  const collectionType = searchParam.get("types");
+  const collectionFilter =
+    !collectionType || collectionType === "all" ? "all" : collectionType;
   const collections: Collection[] = useSelector(
     (state: RootState) => state.collection.collections
   );
-
+  const filteredCollections =
+    collectionFilter == "all" || collectionFilter == "popular"
+      ? collections
+      : collections.filter((col) => col.type === collectionFilter);
   return (
     <>
       <div className="flex items-center justify-between">
@@ -50,29 +56,30 @@ const ProfileCollectionList = () => {
       </div>
       {layoutFilter === "grid" ? (
         <div className="flex gap-4 flex-wrap mt-5">
-          {collections && collections.length > 0 ? (
-            collections.map((item, index) => (
+          {filteredCollections && filteredCollections.length > 0 ? (
+            filteredCollections.map((item, index) => (
               <CollectionCard data={item} key={index} />
             ))
           ) : (
             <EmptyBox label="Collection">
-              <CreateNewCollection />
+              <CreateNewCollection edit={false} />
             </EmptyBox>
           )}
         </div>
-      ) : collections && collections.length > 0 ? (
+      ) : filteredCollections && filteredCollections.length > 0 ? (
         <TableView
+          type="collection"
           headers={[
             { label: "Title" },
             { label: "Created At" },
             { label: "Last Updated" },
             { label: "Stats" },
           ]}
-          data={collections}
+          data={filteredCollections}
         />
       ) : (
         <EmptyBox label="Collection">
-          <CreateNewCollection />
+          <CreateNewCollection edit={false} />
         </EmptyBox>
       )}
     </>

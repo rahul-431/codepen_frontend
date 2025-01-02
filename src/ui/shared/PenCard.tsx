@@ -12,7 +12,7 @@ const PenCard = ({ data }: { data: PenResponse }) => {
   const [searchParam] = useSearchParams();
   const tab = searchParam.get("tab");
   return (
-    <div className="flex flex-col w-96 h-80 rounded-md bg-[#1E1F26] p-4">
+    <div className="flex flex-col sm:w-96 w-full h-80 rounded-md bg-[#1E1F26] sm:p-4 p-2">
       <div className="h-[70%] w-full bg-white rounded-md">
         <img src="" alt="" />
       </div>

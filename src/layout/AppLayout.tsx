@@ -1,8 +1,5 @@
-import {
-  useGetCurrentUserQuery,
-  useLogoutMutation,
-} from "@/redux/slices/authApiSlice";
-import { addUser, removeUser } from "@/redux/slices/authSlice";
+import { useGetCurrentUserQuery } from "@/redux/slices/authApiSlice";
+import { addUser } from "@/redux/slices/authSlice";
 import {
   useGetCurrentCollectionsQuery,
   useGetTempDelCollectionsQuery,
@@ -21,15 +18,11 @@ import SideBar from "@/ui/shared/SideBar";
 import Spinner from "@/ui/shared/Spinner";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
   const accessToken = localStorage.getItem("accessToken");
   const dispatch = useDispatch();
-  const [logout] = useLogoutMutation();
-  const navigate = useNavigate();
-  // Use the query hook conditionally based on the presence of the access token
   const {
     data: user,
     error,
@@ -85,18 +78,13 @@ const AppLayout = () => {
     console.log(error || e || e1);
   }
   if (error) {
-    if (accessToken) {
-      logout({ accessToken: accessToken });
-    }
-    dispatch(removeUser());
-    localStorage.clear();
-    navigate("/");
-    toast.error("User session expired");
+    console.log("error", error);
   }
   if (isLoading || isl || islc) {
     return (
       <div className="h-screen bg-primary flex items-center justify-center">
         <Spinner />
+        
       </div>
     );
   }

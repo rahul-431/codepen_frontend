@@ -10,7 +10,7 @@ const YourWork = () => {
     <div className="bg-primary h-full w-full overflow-y-auto">
       <Tabs
         defaultValue={!defaultTab ? "pens" : defaultTab}
-        className="mt-5 p-5"
+        className="sm:mt-5 sm:p-5 mt-2 p-2"
       >
         <TabsList className="bg-transparent space-x-2">
           <TabsTrigger

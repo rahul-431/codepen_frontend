@@ -15,7 +15,14 @@ const ProfilePenList = () => {
     !layoutFilterValue || layoutFilterValue === "grid"
       ? "grid"
       : layoutFilterValue;
+  const penType = searchParam.get("types");
+  const penFilter = !penType || penType === "all" ? "all" : penType;
   const pens: PenResponse[] = useSelector((state: RootState) => state.pen.pens);
+  const filteredPens =
+    penFilter == "all" || penFilter == "popular"
+      ? pens
+      : pens.filter((pen) => pen.type === penFilter);
+
   const navigate = useNavigate();
   return (
     <>
@@ -46,8 +53,10 @@ const ProfilePenList = () => {
       </div>
       {layoutFilter === "grid" ? (
         <div className="flex gap-4 flex-wrap">
-          {pens && pens.length > 0 ? (
-            pens.map((item, index) => <PenCard data={item} key={index} />)
+          {filteredPens && filteredPens.length > 0 ? (
+            filteredPens.map((item, index) => (
+              <PenCard data={item} key={index} />
+            ))
           ) : (
             <EmptyBox label="Pen">
               <button
@@ -59,15 +68,16 @@ const ProfilePenList = () => {
             </EmptyBox>
           )}
         </div>
-      ) : pens && pens.length > 0 ? (
+      ) : filteredPens && filteredPens.length > 0 ? (
         <TableView
+          type="pen"
           headers={[
             { label: "Title" },
             { label: "Created At" },
             { label: "Last Updated" },
             { label: "Stats" },
           ]}
-          data={pens}
+          data={filteredPens}
         />
       ) : (
         <EmptyBox label="Pen">

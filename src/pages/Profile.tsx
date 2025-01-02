@@ -24,11 +24,11 @@ const Profile = () => {
             <img
               src="https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="user profile"
-              className="w-24 h-24 object-contain rounded-md"
+              className="sm:w-24 sm:h-24 w-20 h-20 object-contain rounded-md"
             />
           </div>
         </div>
-        <div className=" bg-black w-full h-[20%] flex items-center justify-end text-white gap-4 px-4">
+        <div className=" bg-black w-full h-[20%] flex items-end sm:items-center justify-end text-white gap-4 px-4">
           <p className="space-x-1">
             <span>{user?.followers?.length || 0}</span>
             <span>Followers</span>

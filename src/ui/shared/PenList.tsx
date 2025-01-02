@@ -14,7 +14,7 @@ const PenList = () => {
   return (
     <div className="w-full h-full flex flex-col gap-5">
       <div className="flex items-center justify-between bg-[#383a47] p-2 rounded-md">
-        <div className="flex space-x-2 items-center">
+        <div className="hidden md:flex space-x-2 items-center">
           <div className="flex space-x-1">
             <input
               type="text"

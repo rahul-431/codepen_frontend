@@ -83,8 +83,24 @@ type Collection = {
   _id: string;
   title: string;
   description?: string;
-  pens: string[];
-  author: string;
+  pens: string[] | PenResponse[];
+  author: string | User;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+  deleted: boolean;
+  stats?: {
+    views: string[];
+    likes: string[];
+    comments: string[];
+  };
+};
+type CurrentCollectionResponse = {
+  _id: string;
+  title: string;
+  description?: string;
+  pens: PenResponse[];
+  author: User;
   type: string;
   createdAt: string;
   updatedAt: string;
@@ -96,6 +112,7 @@ type Collection = {
   };
 };
 type CollectionRequest = {
+  id?: string;
   title: string;
   description?: string;
   type?: string;

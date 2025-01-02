@@ -12,7 +12,7 @@ const CollectionCard = ({ data }: CollectionCard) => {
   const [searchParam] = useSearchParams();
   const tab = searchParam.get("tab");
   return (
-    <div className="flex flex-col w-96 h-80 rounded-md bg-[#1E1F26] p-4">
+    <div className="flex flex-col w-full sm:w-96 h-80 rounded-md bg-[#1E1F26] sm:p-4 p-2">
       <div className="h-[70%] w-full rounded-md grid grid-cols-2 gap-2">
         <div className="rounded-md bg-white" />
         <div className="rounded-md bg-white" />
@@ -61,7 +61,7 @@ const CollectionCard = ({ data }: CollectionCard) => {
           {tab !== "deleted" && (
             <Button
               className="text-2xl"
-              onClick={() => navigate(`/collections/${data._id}`)}
+              onClick={() => navigate(`/app/collection?id=${data._id}`)}
             >
               <HiArrowsPointingOut />
             </Button>

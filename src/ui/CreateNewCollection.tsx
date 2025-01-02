@@ -10,20 +10,35 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateNewCollectionMutation } from "@/redux/slices/collectionApiSlice";
+import {
+  useCreateNewCollectionMutation,
+  useUpdateCollectionApiMutation,
+} from "@/redux/slices/collectionApiSlice";
 import { addCollection } from "@/redux/slices/collectionSlice";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { FaEdit } from "react-icons/fa";
 import { toast } from "sonner";
 type CollectionForm = {
   title: string;
   description: string;
 };
-export function CreateNewCollection() {
+export function CreateNewCollection({
+  edit = false,
+  title,
+  id,
+  desc,
+}: {
+  edit: boolean;
+  id?: string;
+  title?: string;
+  desc?: string;
+}) {
   const [form, setForm] = useState<CollectionForm>({
-    title: "",
-    description: "",
+    title: edit && title ? title : "",
+    description: edit && desc ? desc : "",
   });
-  const [createCollection, { data }] = useCreateNewCollectionMutation();
+  const [createCollection] = useCreateNewCollectionMutation();
+  const [updateCollection] = useUpdateCollectionApiMutation();
   const accessToken = localStorage.getItem("accessToken");
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -39,26 +54,45 @@ export function CreateNewCollection() {
       toast.error("Title is required");
     }
     if (accessToken) {
-      await createCollection({
-        title: form.title,
-        description: form.description,
-        accessToken,
-      });
-      data && addCollection(data);
-
-      toast.success("Collection created successfully");
+      if (!edit) {
+        const res = await createCollection({
+          title: form.title,
+          description: form.description,
+          accessToken,
+        });
+        res.data && addCollection(res.data);
+        toast.success("Collection created successfully");
+      } else {
+        const res = await updateCollection({
+          id: id,
+          title: form.title,
+          description: form.description,
+          accessToken,
+        });
+        if (res.data && res.data?._id) {
+          toast.success("Collection updated successfully");
+        }
+      }
     }
   };
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="p-2 rounded-md bg-green-900 hover:bg-green-600">
-          Create New Collection
-        </button>
+        {edit ? (
+          <button className="hover:bg-[#272831] p-3 bg-[#1E1F26] rounded-md text-xl">
+            <FaEdit />
+          </button>
+        ) : (
+          <button className="p-2 rounded-md bg-green-900 hover:bg-green-600">
+            Create New Collection
+          </button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-primary text-white">
         <DialogHeader>
-          <DialogTitle>Create New Collection</DialogTitle>
+          <DialogTitle>
+            {edit ? "Edit collection" : "Create New Collection"}
+          </DialogTitle>
           <DialogDescription>
             Organize your pens in collection to make specific project.
           </DialogDescription>
@@ -94,7 +128,7 @@ export function CreateNewCollection() {
             onClick={handleClick}
             className="p-2 rounded-md bg-green-900 hover:bg-green-600"
           >
-            Create
+            {edit ? "Edit" : "Create"}
           </button>
         </DialogFooter>
       </DialogContent>
