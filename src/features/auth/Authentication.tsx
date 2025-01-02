@@ -16,7 +16,7 @@ import {
 } from "@/redux/slices/authApiSlice";
 import { addToken, addUser } from "@/redux/slices/authSlice";
 import Spinner from "@/ui/shared/Spinner";
-import { useGoogleLogin } from "@react-oauth/google";
+// import { useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { IoMdArrowBack } from "react-icons/io";
@@ -49,14 +49,14 @@ function Authentication() {
       [name]: value, // Update the specific field
     }));
   };
-  const handleGoogleAuth = useGoogleLogin({
-    onSuccess: (res) => {
-      console.log(res);
-    },
-    onError: (error) => {
-      console.log("Failed to login", error);
-    },
-  });
+  // const handleGoogleAuth = useGoogleLogin({
+  //   onSuccess: (res) => {
+  //     console.log(res);
+  //   },
+  //   onError: (error) => {
+  //     console.log("Failed to login", error);
+  //   },
+  // });
   const handleRegister = async () => {
     const { name, email, password, cPassword } = registerForm;
     if ([name, email, password, cPassword].some((item) => item.trim() === "")) {
@@ -129,7 +129,9 @@ function Authentication() {
             <CardContent className="flex flex-col gap-4">
               <div className={`${open ? "hidden" : "flex"} flex-col gap-4`}>
                 <Button
-                  onClick={() => handleGoogleAuth()}
+                  onClick={() =>
+                    toast.error("This feature is under development")
+                  }
                   className="space-x-1"
                 >
                   <span className="text-red-500">
@@ -233,7 +235,9 @@ function Authentication() {
             <CardContent className="space-y-2">
               <div className="flex flex-col gap-4">
                 <Button
-                  onClick={() => handleGoogleAuth()}
+                  onClick={() =>
+                    toast.error("This feature is under development")
+                  }
                   className="space-x-1"
                 >
                   <span className="text-red-500">
