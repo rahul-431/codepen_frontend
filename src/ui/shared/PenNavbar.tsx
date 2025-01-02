@@ -24,6 +24,7 @@ import Spinner from "./Spinner";
 import { toast } from "sonner";
 import UserAction from "./UserAction";
 import { useCurrentPen } from "@/hooks/useCurrentPen";
+import { addPen } from "@/redux/slices/penSlice";
 
 const PenNavbar = () => {
   const title = useSelector((state: RootState) => state.code.title);
@@ -60,24 +61,25 @@ const PenNavbar = () => {
     }
   }, [isCreated, data, searchParam, setSearchParam]);
 
-  const handleCreatePen = () => {
+  const handleCreatePen = async () => {
     if (accessToken) {
-      createNewPen({
+      const res = await createNewPen({
         title,
         html,
         css,
         js,
         accessToken: accessToken as string,
       });
+      res.data && dispatch(addPen(res.data));
       toast.success("New Pen Created successfully");
     } else {
-      toast.error("User session in expired or Login first");
+      toast.error("Please Login to save pen");
       navigate("/auth");
     }
   };
-  const handleUpdatePen = () => {
+  const handleUpdatePen = async () => {
     if (penId && accessToken) {
-      updatePen({
+      await updatePen({
         _id: penId,
         title,
         html,

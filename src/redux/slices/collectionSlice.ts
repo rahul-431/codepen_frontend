@@ -34,6 +34,15 @@ export const collectionSlice = createSlice({
         collection.type = action.payload.value;
       }
     },
+    updateCollection: (state, action: PayloadAction<CollectionRequest>) => {
+      const collection = state.collections.find(
+        (col) => col._id === action.payload.id
+      );
+      if (collection) {
+        collection.title = action.payload.title;
+        collection.description = action.payload.description;
+      }
+    },
     deleteStateCollection: (state, action: PayloadAction<Collection>) => {
       state.collections = state.collections.filter(
         (col) => col._id !== action.payload._id
@@ -63,6 +72,7 @@ export const {
   addDeletedCollections,
   deleteStateCollectionPer,
   addCollection,
+  updateCollection,
   restoreCollection,
 } = collectionSlice.actions;
 export default collectionSlice.reducer;

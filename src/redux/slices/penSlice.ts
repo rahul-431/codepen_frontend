@@ -14,6 +14,9 @@ export const penSlice = createSlice({
     addPens: (state, action: PayloadAction<PenResponse[]>) => {
       state.pens = action.payload;
     },
+    addPen: (state, action: PayloadAction<PenResponse>) => {
+      state.pens.push(action.payload);
+    },
     addDeletedPens: (state, action: PayloadAction<PenResponse[]>) => {
       state.deletedPens = action.payload;
     },
@@ -45,6 +48,7 @@ export const penSlice = createSlice({
 });
 export const {
   addPens,
+  addPen,
   changeStatePenType,
   deleteStatePen,
   addDeletedPen,

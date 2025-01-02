@@ -14,9 +14,13 @@ import {
   useCreateNewCollectionMutation,
   useUpdateCollectionApiMutation,
 } from "@/redux/slices/collectionApiSlice";
-import { addCollection } from "@/redux/slices/collectionSlice";
+import {
+  addCollection,
+  updateCollection,
+} from "@/redux/slices/collectionSlice";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 type CollectionForm = {
   title: string;
@@ -38,7 +42,8 @@ export function CreateNewCollection({
     description: edit && desc ? desc : "",
   });
   const [createCollection] = useCreateNewCollectionMutation();
-  const [updateCollection] = useUpdateCollectionApiMutation();
+  const [updateCollectionApi] = useUpdateCollectionApiMutation();
+  const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -60,15 +65,24 @@ export function CreateNewCollection({
           description: form.description,
           accessToken,
         });
-        res.data && addCollection(res.data);
+        res.data && dispatch(addCollection(res.data));
         toast.success("Collection created successfully");
       } else {
-        const res = await updateCollection({
+        const res = await updateCollectionApi({
           id: id,
           title: form.title,
           description: form.description,
           accessToken,
         });
+        res.data &&
+          dispatch(
+            updateCollection({
+              id: id,
+              title: form.title,
+              description: form.description,
+              accessToken,
+            })
+          );
         if (res.data && res.data?._id) {
           toast.success("Collection updated successfully");
         }

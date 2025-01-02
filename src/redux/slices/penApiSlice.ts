@@ -24,7 +24,7 @@ export const penApiSlice = createApi({
           },
         }),
       }),
-      createNewPen: builder.mutation<Pen, Partial<Pen>>({
+      createNewPen: builder.mutation<PenResponse, Partial<Pen>>({
         query: ({ accessToken, ...pen }) => ({
           url: "/",
           method: "POST",
@@ -34,7 +34,7 @@ export const penApiSlice = createApi({
           },
         }),
       }),
-      updatePen: builder.mutation<Pen, Partial<Pen>>({
+      updatePen: builder.mutation<PenResponse, Partial<Pen>>({
         query: ({ _id: id, accessToken, ...pen }) => ({
           url: `/${id}`,
           method: "PUT",
