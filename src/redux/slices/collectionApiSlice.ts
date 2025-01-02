@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-export const penApiSlice = createApi({
-  reducerPath: "pensApi",
+export const collectionApiSlice = createApi({
+  reducerPath: "collectionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api/v1/pens",
+    baseUrl: "http://localhost:3000/api/v1/collections",
   }),
   endpoints: (builder) => {
     return {
-      getPens: builder.query<PenResponse[], CurrentUserRequest>({
+      getCollections: builder.query<Collection[], CurrentUserRequest>({
         query: ({ accessToken }) => ({
           url: "/",
           method: "GET",
@@ -15,7 +15,7 @@ export const penApiSlice = createApi({
           },
         }),
       }),
-      getCurrentPen: builder.query<PenResponse, CurrentPenRequest>({
+      getCurrentCollection: builder.query<Collection, CurrentPenRequest>({
         query: ({ id, accessToken }) => ({
           url: `/current/${id}`,
           method: "GET",
@@ -24,27 +24,17 @@ export const penApiSlice = createApi({
           },
         }),
       }),
-      createNewPen: builder.mutation<Pen, Partial<Pen>>({
-        query: ({ accessToken, ...pen }) => ({
+      createNewCollection: builder.mutation<Collection, CollectionRequest>({
+        query: ({ accessToken, ...collection }) => ({
           url: "/",
           method: "POST",
-          body: pen,
+          body: collection,
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         }),
       }),
-      updatePen: builder.mutation<Pen, Partial<Pen>>({
-        query: ({ _id: id, accessToken, ...pen }) => ({
-          url: `/${id}`,
-          method: "PUT",
-          body: pen,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }),
-      }),
-      getCurrentPens: builder.query<PenResponse[], CurrentUserRequest>({
+      getCurrentCollections: builder.query<Collection[], CurrentUserRequest>({
         query: ({ accessToken }) => ({
           url: "/get",
           method: "GET",
@@ -53,7 +43,7 @@ export const penApiSlice = createApi({
           },
         }),
       }),
-      changeType: builder.mutation<PenResponse, ChangeTypeRequest>({
+      changeCollectionType: builder.mutation<Collection, ChangeTypeRequest>({
         query: ({ accessToken, value, id }) => ({
           url: `/${id}`,
           method: "POST",
@@ -63,7 +53,7 @@ export const penApiSlice = createApi({
           },
         }),
       }),
-      permanentDeletePen: builder.mutation<void, CurrentPenRequest>({
+      permanentDeleteCollection: builder.mutation<void, CurrentPenRequest>({
         query: ({ id, accessToken }) => ({
           url: `/${id}`,
           method: "DELETE",
@@ -72,7 +62,7 @@ export const penApiSlice = createApi({
           },
         }),
       }),
-      tempDeletePen: builder.mutation<PenResponse, CurrentPenRequest>({
+      tempDeleteCollection: builder.mutation<Collection, CurrentPenRequest>({
         query: ({ id, accessToken }) => ({
           url: `/tempDel/${id}`,
           method: "POST",
@@ -81,7 +71,7 @@ export const penApiSlice = createApi({
           },
         }),
       }),
-      restorePen: builder.mutation<PenResponse, CurrentPenRequest>({
+      restoreCollection: builder.mutation<Collection, CurrentPenRequest>({
         query: ({ id, accessToken }) => ({
           url: `/restore/${id}`,
           method: "POST",
@@ -90,7 +80,7 @@ export const penApiSlice = createApi({
           },
         }),
       }),
-      getTempDelPens: builder.query<PenResponse[], CurrentUserRequest>({
+      getTempDelCollections: builder.query<Collection[], CurrentUserRequest>({
         query: ({ accessToken }) => ({
           url: "/tempDel",
           method: "GET",
@@ -104,14 +94,13 @@ export const penApiSlice = createApi({
 });
 
 export const {
-  useGetPensQuery,
-  useCreateNewPenMutation,
-  useUpdatePenMutation,
-  useGetCurrentPenQuery,
-  useGetCurrentPensQuery,
-  useChangeTypeMutation,
-  usePermanentDeletePenMutation,
-  useTempDeletePenMutation,
-  useGetTempDelPensQuery,
-  useRestorePenMutation,
-} = penApiSlice;
+  useChangeCollectionTypeMutation,
+  useCreateNewCollectionMutation,
+  useGetCollectionsQuery,
+  useGetCurrentCollectionQuery,
+  useGetCurrentCollectionsQuery,
+  useGetTempDelCollectionsQuery,
+  usePermanentDeleteCollectionMutation,
+  useTempDeleteCollectionMutation,
+  useRestoreCollectionMutation,
+} = collectionApiSlice;

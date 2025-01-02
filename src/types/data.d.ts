@@ -42,19 +42,7 @@ type Token = {
 type CurrentUserRequest = {
   accessToken: string;
 };
-type Collection = {
-  _id: string;
-  title: string;
-  createdAt?: string;
-  updatedAt?: string;
-  author?: string;
-  type?: string;
-  stats?: {
-    views: string[];
-    likes: string[];
-    comments: string[];
-  };
-};
+
 type CollectionCard = {
   data: Collection;
 };
@@ -66,6 +54,7 @@ type PenResponse = {
   createdAt: string;
   updatedAt: string;
   type: string;
+  deleted: boolean;
   stats?: {
     views: string[];
     likes: string[];
@@ -89,4 +78,26 @@ type ChangeTypeRequest = {
 };
 type StateDeleteType = {
   id: string;
+};
+type Collection = {
+  _id: string;
+  title: string;
+  description?: string;
+  pens: string[];
+  author: string;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+  deleted: boolean;
+  stats?: {
+    views: string[];
+    likes: string[];
+    comments: string[];
+  };
+};
+type CollectionRequest = {
+  title: string;
+  description?: string;
+  type?: string;
+  accessToken: string;
 };

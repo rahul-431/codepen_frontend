@@ -14,6 +14,7 @@ import { useLogoutMutation } from "@/redux/slices/authApiSlice";
 import { toast } from "sonner";
 import { removeUser } from "@/redux/slices/authSlice";
 import { useDispatch } from "react-redux";
+import { CreateNewCollection } from "../CreateNewCollection";
 
 const UserAction = () => {
   const navigate = useNavigate();
@@ -61,11 +62,14 @@ const UserAction = () => {
           </span>
           New Pen
         </DropdownMenuItem>
-        <DropdownMenuItem className="text-md font-semibold">
+        <DropdownMenuItem
+          onClick={() => navigate("create-collection")}
+          className="text-md font-semibold"
+        >
           <span>
             <BsCollection />
           </span>
-          <span>New Collection</span>
+          <span>Create New Collection</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="text-md font-semibold">

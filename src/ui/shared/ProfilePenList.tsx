@@ -47,7 +47,7 @@ const ProfilePenList = () => {
       {layoutFilter === "grid" ? (
         <div className="flex gap-4 flex-wrap">
           {pens && pens.length > 0 ? (
-            pens.map((item) => <PenCard data={item} />)
+            pens.map((item, index) => <PenCard data={item} key={index} />)
           ) : (
             <EmptyBox label="Pen">
               <button
@@ -71,7 +71,10 @@ const ProfilePenList = () => {
         />
       ) : (
         <EmptyBox label="Pen">
-          <button className="p-2 rounded-md bg-green-900 hover:bg-green-600">
+          <button
+            onClick={() => navigate("/pen")}
+            className="p-2 rounded-md bg-green-900 hover:bg-green-600"
+          >
             Create New Pen
           </button>
         </EmptyBox>

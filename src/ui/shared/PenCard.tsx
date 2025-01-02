@@ -3,11 +3,14 @@ import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
 import { HiArrowsPointingOut } from "react-icons/hi2";
 import { IoEyeSharp } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PenCardAction from "./PenCardAction";
+import PermanentDeleteAction from "./PermanentDeleteAction";
 
 const PenCard = ({ data }: { data: PenResponse }) => {
   const navigate = useNavigate();
+  const [searchParam] = useSearchParams();
+  const tab = searchParam.get("tab");
   return (
     <div className="flex flex-col w-96 h-80 rounded-md bg-[#1E1F26] p-4">
       <div className="h-[70%] w-full bg-white rounded-md">
@@ -25,7 +28,11 @@ const PenCard = ({ data }: { data: PenResponse }) => {
               {data.type}
             </span>
           </p>
-          <PenCardAction penId={data._id} type={data.type} />
+          {tab && tab === "deleted" ? (
+            <PermanentDeleteAction colId={data._id} type="pen" />
+          ) : (
+            <PenCardAction penId={data._id} type={data.type} />
+          )}
         </div>
         <div className="flex justify-between items-center">
           <div className="space-x-2 mt-2">
@@ -48,12 +55,14 @@ const PenCard = ({ data }: { data: PenResponse }) => {
               <span>{data.stats?.views.length || 0}</span>
             </Button>
           </div>
-          <Button
-            className="text-2xl"
-            onClick={() => navigate(`/pen?id=${data._id}`)}
-          >
-            <HiArrowsPointingOut />
-          </Button>
+          {tab !== "deleted" && (
+            <Button
+              className="text-2xl"
+              onClick={() => navigate(`/pen?id=${data._id}`)}
+            >
+              <HiArrowsPointingOut />
+            </Button>
+          )}
         </div>
       </div>
     </div>

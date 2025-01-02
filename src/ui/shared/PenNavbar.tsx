@@ -92,8 +92,8 @@ const PenNavbar = () => {
     }
   };
   const handleUpdateTitle = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && penId) {
-      updatePen({ _id: penId, title });
+    if (e.key === "Enter") {
+      handleUpdatePen();
       setEditTitle(false);
       toast.success("Title updated succesfully");
     }
@@ -135,9 +135,7 @@ const PenNavbar = () => {
             </button>
           </div>
           <p className="hidden sm:block text-slate-600 font-semibold">
-            {(authUser && authUser._id) || accessToken
-              ? authUser?.name.toUpperCase()
-              : "Captain Anonymous"}
+            {authUser ? authUser.name.toUpperCase() : "Captain Anonymous"}
           </p>
         </div>
       </div>

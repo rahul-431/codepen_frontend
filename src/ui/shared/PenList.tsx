@@ -7,15 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FaTags, FaThList } from "react-icons/fa";
-import { TfiLayoutGrid3Alt } from "react-icons/tfi";
-import PenCard from "./PenCard";
-import EmptyBox from "./EmptyBox";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { FaTags } from "react-icons/fa";
+import ProfilePenList from "./ProfilePenList";
 
 const PenList = () => {
-  const pens: PenResponse[] = useSelector((state: RootState) => state.pen.pens);
   return (
     <div className="w-full h-full flex flex-col gap-5">
       <div className="flex items-center justify-between bg-[#383a47] p-2 rounded-md">
@@ -36,14 +31,6 @@ const PenList = () => {
           </Button>
         </div>
         <div className="flex space-x-2 items-center">
-          <div className="space-x-1">
-            <Button className="text-xl">
-              <TfiLayoutGrid3Alt />
-            </Button>
-            <Button className="text-xl">
-              <FaThList />
-            </Button>
-          </div>
           <Select>
             <SelectTrigger className="w-[180px] bg-[#1E1F26] outline-none border-none text-white ">
               <SelectValue placeholder="Sort pens" />
@@ -60,17 +47,7 @@ const PenList = () => {
           </Select>
         </div>
       </div>
-      <div className="flex flex-wrap gap-4 p-2">
-        {pens && pens.length > 0 ? (
-          pens.map((item) => <PenCard data={item} />)
-        ) : (
-          <EmptyBox label="Pen">
-            <button className="p-2 rounded-md bg-green-900 hover:bg-green-600">
-              Create New Pen
-            </button>
-          </EmptyBox>
-        )}
-      </div>
+      <ProfilePenList />
     </div>
   );
 };

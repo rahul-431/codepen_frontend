@@ -6,6 +6,9 @@ import TableView from "./TableView";
 import { useSearchParams } from "react-router-dom";
 import CollectionCard from "./CollectionCard";
 import EmptyBox from "./EmptyBox";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { CreateNewCollection } from "../CreateNewCollection";
 
 const ProfileCollectionList = () => {
   const [searchParam] = useSearchParams();
@@ -14,7 +17,9 @@ const ProfileCollectionList = () => {
     !layoutFilterValue || layoutFilterValue === "grid"
       ? "grid"
       : layoutFilterValue;
-  const collections: Collection[] = [];
+  const collections: Collection[] = useSelector(
+    (state: RootState) => state.collection.collections
+  );
 
   return (
     <>
@@ -44,14 +49,14 @@ const ProfileCollectionList = () => {
         />
       </div>
       {layoutFilter === "grid" ? (
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex gap-4 flex-wrap mt-5">
           {collections && collections.length > 0 ? (
-            collections.map((item) => <CollectionCard data={item} />)
+            collections.map((item, index) => (
+              <CollectionCard data={item} key={index} />
+            ))
           ) : (
             <EmptyBox label="Collection">
-              <button className="p-2 rounded-md bg-green-900 hover:bg-green-600">
-                Create New Collection
-              </button>
+              <CreateNewCollection />
             </EmptyBox>
           )}
         </div>
@@ -67,9 +72,7 @@ const ProfileCollectionList = () => {
         />
       ) : (
         <EmptyBox label="Collection">
-          <button className="p-2 rounded-md bg-green-900 hover:bg-green-600">
-            Create New Collection
-          </button>
+          <CreateNewCollection />
         </EmptyBox>
       )}
     </>

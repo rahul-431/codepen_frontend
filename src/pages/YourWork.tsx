@@ -1,23 +1,43 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Deleted from "@/ui/Deleted";
 import PenList from "@/ui/shared/PenList";
+import ProfileCollectionList from "@/ui/shared/ProfileCollectionList";
+import { useSearchParams } from "react-router-dom";
 const YourWork = () => {
+  const [searchParam, setSearchParam] = useSearchParams();
+  const defaultTab = searchParam.get("tab");
   return (
     <div className="bg-primary h-full w-full overflow-y-auto">
-      <Tabs defaultValue="pens" className="mt-5 p-5">
+      <Tabs
+        defaultValue={!defaultTab ? "pens" : defaultTab}
+        className="mt-5 p-5"
+      >
         <TabsList className="bg-transparent space-x-2">
           <TabsTrigger
+            onClick={() => {
+              searchParam.set("tab", "pens");
+              setSearchParam(searchParam);
+            }}
             value="pens"
             className="bg-[#383a47] text-lg hover:bg-white hover:text-black text-white"
           >
             Pens
           </TabsTrigger>
           <TabsTrigger
+            onClick={() => {
+              searchParam.set("tab", "collections");
+              setSearchParam(searchParam);
+            }}
             value="collections"
             className="bg-[#383a47] hover:bg-white text-lg hover:text-black text-white"
           >
             Collections
           </TabsTrigger>
           <TabsTrigger
+            onClick={() => {
+              searchParam.set("tab", "deleted");
+              setSearchParam(searchParam);
+            }}
             value="deleted"
             className="bg-[#383a47] hover:bg-white text-lg hover:text-black text-white"
           >
@@ -29,10 +49,10 @@ const YourWork = () => {
           <PenList />
         </TabsContent>
         <TabsContent value="collections">
-          <h1>Collections</h1>
+          <ProfileCollectionList />
         </TabsContent>
         <TabsContent value="deleted">
-          <h1>Deleted</h1>
+          <Deleted />
         </TabsContent>
       </Tabs>
     </div>

@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { AiFillLike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
-import { HiArrowsPointingOut, HiEllipsisHorizontal } from "react-icons/hi2";
+import { HiArrowsPointingOut } from "react-icons/hi2";
 import { IoEyeSharp } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import CollectionCardAction from "./CollectionCardAction";
+import PermanentDeleteAction from "./PermanentDeleteAction";
 
 const CollectionCard = ({ data }: CollectionCard) => {
   const navigate = useNavigate();
+  const [searchParam] = useSearchParams();
+  const tab = searchParam.get("tab");
   return (
     <div className="flex flex-col w-96 h-80 rounded-md bg-[#1E1F26] p-4">
       <div className="h-[70%] w-full rounded-md grid grid-cols-2 gap-2">
@@ -17,10 +21,21 @@ const CollectionCard = ({ data }: CollectionCard) => {
       </div>
       <div className="h-[20%] mt-2">
         <div className="flex justify-between items-center">
-          <p className="text-white text-lg">{data.title}</p>
-          <button className="text-white text-3xl">
-            <HiEllipsisHorizontal />
-          </button>
+          <p className="text-white text-lg space-x-2">
+            <span>{data.title}</span>
+            <span
+              className={`${
+                data.type === "public" ? "bg-green-900" : "bg-yellow-900"
+              } px-1 rounded`}
+            >
+              {data.type}
+            </span>
+          </p>
+          {tab && tab === "deleted" ? (
+            <PermanentDeleteAction colId={data._id} type="collection" />
+          ) : (
+            <CollectionCardAction colId={data._id} type={data.type} />
+          )}
         </div>
         <div className="flex justify-between items-center">
           <div className="space-x-2 mt-2">
@@ -43,12 +58,14 @@ const CollectionCard = ({ data }: CollectionCard) => {
               <span>{data.stats?.views.length || 0}</span>
             </Button>
           </div>
-          <Button
-            className="text-2xl"
-            onClick={() => navigate(`/collections/${data._id}`)}
-          >
-            <HiArrowsPointingOut />
-          </Button>
+          {tab !== "deleted" && (
+            <Button
+              className="text-2xl"
+              onClick={() => navigate(`/collections/${data._id}`)}
+            >
+              <HiArrowsPointingOut />
+            </Button>
+          )}
         </div>
       </div>
     </div>

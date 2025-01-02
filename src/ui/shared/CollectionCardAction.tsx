@@ -4,37 +4,44 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { BsBoxes } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
 import { MdDeleteOutline } from "react-icons/md";
 import { RiGitRepositoryPrivateLine } from "react-icons/ri";
-import {
-  useChangeTypeMutation,
-  useTempDeletePenMutation,
-} from "@/redux/slices/penApiSlice";
 import { toast } from "sonner";
-import { changeStatePenType, deleteStatePen } from "@/redux/slices/penSlice";
 import { useNavigate } from "react-router-dom";
+import {
+  useChangeCollectionTypeMutation,
+  useTempDeleteCollectionMutation,
+} from "@/redux/slices/collectionApiSlice";
+import {
+  changeStateCollectionType,
+  deleteStateCollection,
+} from "@/redux/slices/collectionSlice";
 
-const PenCardAction = ({ penId, type }: { penId: string; type: string }) => {
+const CollectionCardAction = ({
+  colId,
+  type,
+}: {
+  colId: string;
+  type: string;
+}) => {
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
   const navigate = useNavigate();
-  const [changeType] = useChangeTypeMutation();
-  const [deleteTempPen] = useTempDeletePenMutation();
-  const handleAddToCollection = () => {};
+  const [changeType] = useChangeCollectionTypeMutation();
+  const [deleteColTemp] = useTempDeleteCollectionMutation();
   const handleMakePrivate = () => {
     if (accessToken) {
       const value = type === "public" ? "private" : "public";
       const request: ChangeTypeRequest = {
         value: value,
         accessToken: accessToken as string,
-        id: penId,
+        id: colId,
       };
       changeType(request);
-      dispatch(changeStatePenType(request));
-      toast.success("Pen type changed successfully");
+      dispatch(changeStateCollectionType(request));
+      toast.success("Collection type changed successfully");
     } else {
       toast.error("User session expired, Please login to proceed");
       navigate("/auth");
@@ -43,12 +50,12 @@ const PenCardAction = ({ penId, type }: { penId: string; type: string }) => {
 
   const handleDelete = async () => {
     if (accessToken) {
-      const res = await deleteTempPen({
-        id: penId,
+      const res = await deleteColTemp({
+        id: colId,
         accessToken: accessToken as string,
       });
-      res.data && dispatch(deleteStatePen(res.data));
-      toast.success("Pen Deleted successfully");
+      res.data && dispatch(deleteStateCollection(res.data));
+      toast.success("Collection Deleted successfully");
     } else {
       toast.error("User session expired, Please login to proceed");
       navigate("/auth");
@@ -60,15 +67,6 @@ const PenCardAction = ({ penId, type }: { penId: string; type: string }) => {
         <HiEllipsisHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-[#1E1F26] text-white space-y-2 p-2 border-none shadow shadow-white">
-        <DropdownMenuItem
-          onClick={handleAddToCollection}
-          className="text-md font-semibold"
-        >
-          <span>
-            <BsBoxes />
-          </span>
-          Add to Collection
-        </DropdownMenuItem>
         <DropdownMenuItem
           className="text-md font-semibold"
           onClick={handleMakePrivate}
@@ -92,4 +90,4 @@ const PenCardAction = ({ penId, type }: { penId: string; type: string }) => {
   );
 };
 
-export default PenCardAction;
+export default CollectionCardAction;

@@ -20,7 +20,7 @@ const TableView = ({ headers, data }: TableView) => {
         <th></th>
       </tr>
       {data.map((item) => (
-        <tr className="text-center">
+        <tr className="text-center" key={item._id}>
           <td className="p-2">
             <Link to={`/pen?${item._id}`}>{item.title}</Link>
           </td>
