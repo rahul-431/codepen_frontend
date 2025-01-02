@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const authApiSlice = createApi({
   reducerPath: "user",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api/v1/users",
+    baseUrl: "https://codepen-api.vercel.app/api/v1/users",
   }),
   endpoints: (builder) => {
     return {

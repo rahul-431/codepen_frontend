@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const penApiSlice = createApi({
   reducerPath: "pensApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api/v1/pens",
+    baseUrl: "https://codepen-api.vercel.app/api/v1/pens",
   }),
   endpoints: (builder) => {
     return {

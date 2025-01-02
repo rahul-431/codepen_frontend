@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const collectionApiSlice = createApi({
   reducerPath: "collectionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api/v1/collections",
+    baseUrl: "https://codepen-api.vercel.app/api/v1/collections",
   }),
   endpoints: (builder) => {
     return {
